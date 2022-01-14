@@ -1,12 +1,9 @@
-const { Tech, Matchup, State, Occupation, Form } = require('../models');
+const { State, Occupation, Form } = require('../models');
 const { startSession } = require('../models/Tech');
-import { getFormDetails, postFormDetails } from '../3rd-party-api-calls/fetch-reward-get';
+import { getStateAndOccupation, postFormDetails } from '../3rd-party-api-calls/fetch-reward-api';
 
 const resolvers = {
   Query: {
-    // tech: async () => {
-    //   return Tech.find({});
-    // },
     state: async () => {
       return State.find({});
     },
@@ -15,30 +12,32 @@ const resolvers = {
     },
     form: async () => {
       return Form.find({});
+    },
+    getStateAndOccupation: async (parent, args) => {
+      let result = await getStateAndOccupation();
+      console.log(result);
+      return { getStateAndOccupation: result }
     }
-    // matchups: async (parent, { _id }) => {
-    //   const params = _id ? { _id } : {};
-    //   return Matchup.find(params);
-    // },
   },
   Mutation: {
-    // createMatchup: async (parent, args) => {
-    //   const matchup = await Matchup.create(args);
-    //   return matchup;
-    // },
-    submitForm: async (parent, args) => {
-      const form = await Form.create(args);
+    createForm: async (parent, { name, email, password, occupation, state }) => {
+      const form = await Form.create({ name, email, password, occupation, state });
       return form;
     },
-    // createVote: async (parent, { _id, techNum }) => {
-    //   const vote = await Matchup.findOneAndUpdate(
-    //     { _id },
-    //     { $inc: { [`tech${techNum}_votes`]: 1 } },
-    //     { new: true }
-    //   );
-    //   return vote;
-    // },
-  },
+    postFormDetails: async (parent, { name, email, password, occupation, state }) => {
+      try {
+        const postedForm = await postFormDetails({ name, email, password, occupation, state });
+
+        console.log('Form submitted');
+        console.log(postedForm);
+
+        return postedForm;
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
 };
 
 module.exports = resolvers;
