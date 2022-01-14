@@ -12,7 +12,9 @@ Your task is to build a webpage with a user creation form. The form should take 
 * Password
 * Occupation
 * State
-* Occupation and State should allow users to select from options returned by an endpoint. Users should only be able to select one occupation and one state. A **GET** request to ```https://frontend-take-home.fetchrewards.com/form``` will return a JSON body with the following format:
+* Occupation and State should allow users to select from options returned by an endpoint. 
+
+Users should only be able to select one occupation and one state. A **GET** request to ```https://frontend-take-home.fetchrewards.com/form``` will return a JSON body with the following format:
 
 ```
 {
