@@ -1,0 +1,27 @@
+body{
+    margin: 0;
+    overflow: inherit;
+    overflow-x: hidden;
+}
+
+.portfolio  {
+    padding-top: 30px !important; 
+}
+
+.project-h1 {
+    transition: 500ms ease-out;
+}
+
+.project-card > p {
+    font-size: auto;
+}
+
+.container:hover > .row > .portfolio > .project-h1 {
+    text-shadow: -3px 1px 0px var(--bauhausGrey), -8px 0px 0px var(--rotterdamGreen);
+}
+
+
+/* .project-row {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+} */
