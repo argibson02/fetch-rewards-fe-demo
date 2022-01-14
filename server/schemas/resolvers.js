@@ -1,8 +1,10 @@
+const { AuthenticationError } = require('apollo-server-express');
 const { State, Occupation, Form } = require('../models');
-const { startSession } = require('../models/Tech');
-import { getStateAndOccupation, postFormDetails } from '../3rd-party-api-calls/fetch-reward-api';
+const { getStateAndOccupation, postFormDetails } = require('../3rd-party-api-calls/fetch-reward-api');
+const GraphQLJSON = require('graphql-type-json');
 
 const resolvers = {
+  JSON: GraphQLJSON,
   Query: {
     state: async () => {
       return State.find({});
@@ -20,6 +22,22 @@ const resolvers = {
     }
   },
   Mutation: {
+    createState: async (parent, args) => {
+      let result = await getStateAndOccupation();
+      console.log(result);
+      let statesList = result.states;
+      const state = await State.insertMany({ statesList });
+      console.log(state);
+      return state;
+    },
+    createOccupation: async (parent, args) => {
+      let result = await getStateAndOccupation();
+      console.log(result);
+      let occupationsList = result.occupations;
+      const occupation = await Occupation.insertMany({ occupationsList });
+      console.log(occupation);
+      return occupation;
+    },
     createForm: async (parent, { name, email, password, occupation, state }) => {
       const form = await Form.create({ name, email, password, occupation, state });
       return form;

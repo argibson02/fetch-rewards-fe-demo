@@ -23,19 +23,20 @@ const typeDefs = gql`
   }
 
   type getStateAndOccupation {
-    getStateAndOccupation: JSON
+    stateAndOccupationData: JSON
   }
 
   type Query {
-    states: State
-    occupations: Occupation
-    forms: Form
+    state: State
+    occupation: Occupation
+    form: Form
     getStateAndOccupation: getStateAndOccupation
   }
 
   type Mutation {
     createForm: Form
     postFormDetails(name: String!, email: String!, password: String!, occupation: String!, state: String!): Form
+    ## not 100% on that last one here. "): Form" part....
   }
 `;
 
