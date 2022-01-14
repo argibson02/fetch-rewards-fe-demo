@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const statesSchema = new Schema({
+const stateSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -13,6 +13,6 @@ const statesSchema = new Schema({
   }
 });
 
-const States = model('states', statesSchema);
+const State = model('state', stateSchema);
 
-module.exports = States;
+module.exports = State;

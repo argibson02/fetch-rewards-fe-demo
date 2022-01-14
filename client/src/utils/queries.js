@@ -20,3 +20,15 @@ export const QUERY_MATCHUPS = gql`
     }
   }
 `;
+
+
+export const QUERY_FETCH = gql`
+  query states {
+    states {
+      name
+    }
+  }
+  
+
+
+`;
