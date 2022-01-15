@@ -3,15 +3,31 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   scalar JSON
 
-# GET and POST typedef to Fetch Rewards API
+  # GET and POST typedef for Fetch Rewards API.
   type getStateAndOccupation {
     stateAndOccupationData: JSON
   }
 
+  # type postFormDetails {
+  #   name: String!
+  #   email: String!
+  #   password: String!
+  #   occupation: String!
+  #   state: String!
+  # }
+
+
   type postFormDetails {
-    submittedForm: JSON
+    name: String!
+    email: String!
+    password: String!
+    occupation: String
+    state: String!
   }
 
+  # type postFormDetails {
+  #   formData: JSON
+  # }
 
   # Unused MongoDB server queries.
   type Occupation {
@@ -26,7 +42,6 @@ const typeDefs = gql`
   }
 
   type Form {
-    _id: ID!
     name: String!
     email: String!
     password: String!
@@ -38,6 +53,8 @@ const typeDefs = gql`
     state: State
     occupation: Occupation
     form: Form
+    getStateAndOccupation: getStateAndOccupation
+    postFormDetails: postFormDetails
   }
 
   type Mutation {

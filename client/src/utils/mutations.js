@@ -39,14 +39,3 @@ export const CREATE_FORM = gql`
   }
 `;
 
-export const POST_FORM = gql`
-  mutation postFormDetails($name: String!, $email: String!, $password: String!, $occupation: String!, $state: String!) {
-    postFormDetails(name: $name, email: $email, password: $password, occupation: $occupation, state: $state) {
-      name
-      email
-      password
-      occupation
-      state
-    }
-  }
-`;

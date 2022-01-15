@@ -52,9 +52,29 @@ export const QUERY_FORM = gql`
 `;
 
 export const GET_STATE_AND_OCCUPATION = gql`
-    query getStateAndOccupation {
-      getStateAndOccupation {
-          stateAndOccupationData
-        }
+  query getStateAndOccupation {
+    getStateAndOccupation {
+        stateAndOccupationData
+      }
+  }
+`;
+
+// export const POST_FORM = gql`
+//   query postFormDetails($name: String!, $email: String!, $password: String!, $occupation: String!, $state: String!) {
+//     postFormDetails(name: $name, email: $email, password: $password, occupation: $occupation, state: $state) {
+//       formData
+//     }
+//   }
+// `;
+
+export const POST_FORM = gql`
+  query postFormDetails($name: String!, $email: String!, $password: String!, $occupation: String!, $state: String!) {
+    postFormDetails(name: $name, email: $email, password: $password, occupation: $occupation, state: $state) {
+      name
+      email
+      password
+      occupation
+      state
     }
+  }
 `;
