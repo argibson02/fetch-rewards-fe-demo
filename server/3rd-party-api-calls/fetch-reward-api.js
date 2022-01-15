@@ -10,32 +10,18 @@ async function getStateAndOccupation() {
 // POST all form data to endpoint
 async function postFormDetails(args) {
     console.log(args);
-    console.log("hi3");
+    // console.log("hi3");
     const response = await axios.post("https://frontend-take-home.fetchrewards.com/form", {
-        query: `query postFormDetails($name: String!, $email: String!, $password: String!, $occupation: String!, $state: String!) {
-            postFormDetails(name: $name, email: $email, password: $password, occupation: $occupation, state: $state) {
-              name
-              email
-              password
-              occupation
-              state
-            }
-        }`,
-        variables: {
-            name: "args.name",
-            email: "email@email.com",
-            password: "args.password",
-            occupation: "Water Softener",
-            state: "Utah"
-        }
-    }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+            "name": "args.name",
+            "email": "email@email.com",
+            "password": "args.password",
+            "occupation": "Water Softener",
+            "state": "Utah"
+        });
     // console.log(response.status);
-    console.log("hi4");
-    console.log(response);
+    // console.log("hi4");
+    console.log(response.status);
+    // console.log(response);
     return response;
 }
 

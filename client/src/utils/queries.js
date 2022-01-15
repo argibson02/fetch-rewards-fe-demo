@@ -1,14 +1,5 @@
 import { gql } from '@apollo/client';
 
-// export const QUERY_TECH = gql`
-//   query tech {
-//     tech {
-//       _id
-//       name
-//     }
-//   }
-// `;
-
 // export const QUERY_MATCHUPS = gql`
 //   query matchups($_id: String) {
 //     matchups(_id: $_id) {
@@ -59,22 +50,25 @@ export const GET_STATE_AND_OCCUPATION = gql`
   }
 `;
 
+export const POST_FORM = gql`
+  query postFormDetails($formData: JSON) {
+    postFormDetails(formData: $formData) {
+      formData
+    }
+  }
+`;
+
 // export const POST_FORM = gql`
 //   query postFormDetails($name: String!, $email: String!, $password: String!, $occupation: String!, $state: String!) {
 //     postFormDetails(name: $name, email: $email, password: $password, occupation: $occupation, state: $state) {
-//       formData
+//       name
+//       email
+//       password
+//       occupation
+//       state
 //     }
 //   }
 // `;
 
-export const POST_FORM = gql`
-  query postFormDetails($name: String!, $email: String!, $password: String!, $occupation: String!, $state: String!) {
-    postFormDetails(name: $name, email: $email, password: $password, occupation: $occupation, state: $state) {
-      name
-      email
-      password
-      occupation
-      state
-    }
-  }
-`;
+
+// use front end javascript to jsonify the input. Send the thign over as JSON obkect????

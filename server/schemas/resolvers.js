@@ -19,14 +19,14 @@ const resolvers = {
     // POST API call to submit form data.
     postFormDetails: async (parent, args) => {
     // postFormDetails: async (parent, { name, email, password, occupation, state }) => {
-      console.log("hi");
+      // console.log("hi");
       console.log(args);
       try {
-        console.log("hi2");
+        // console.log("hi2");
         let result = await postFormDetails(args);
 
-        console.log('Form submitted');
-        console.log(result);
+        // console.log('Form submitted');
+        // console.log(result);
 
         return result;
 

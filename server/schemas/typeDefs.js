@@ -8,25 +8,16 @@ const typeDefs = gql`
     stateAndOccupationData: JSON
   }
 
+  type postFormDetails {
+    formData: JSON
+  }
+
   # type postFormDetails {
   #   name: String!
   #   email: String!
   #   password: String!
   #   occupation: String!
   #   state: String!
-  # }
-
-
-  type postFormDetails {
-    name: String!
-    email: String!
-    password: String!
-    occupation: String
-    state: String!
-  }
-
-  # type postFormDetails {
-  #   formData: JSON
   # }
 
   # Unused MongoDB server queries.
