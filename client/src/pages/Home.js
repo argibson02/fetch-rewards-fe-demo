@@ -1,21 +1,24 @@
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-// import { QUERY_MATCHUPS } from '../utils/queries';
 import { GET_STATE_AND_OCCUPATION } from '../utils/queries';
 
-import { validateEmail, checkInputs } from '../utils/helpers';
+import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
 
 const Home = () => {
   const { loading, data } = useQuery(GET_STATE_AND_OCCUPATION, {
-    fetchPolicy: "no-cache"
+    // fetchPolicy: "no-cache"
   }, []);
+  console.log(loading);
+  console.log(data);
 
 
   //===================================================
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [password, setPassword] = useState('');
   const [contactName, setContactName] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states.
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
@@ -23,40 +26,60 @@ const Home = () => {
     const inputType = target.name;
     const inputValue = target.value;
 
-    if (inputType === 'email') {
-      setEmail(inputValue);
-    } else if (inputType === 'contactName') {
+    if (inputType === 'contactName') {
       setContactName(inputValue);
-    } else {
-      setMessage(inputValue);
+    } else if (inputType === 'email') {
+      setEmail(inputValue);
+    } else if (inputType === 'password') {
+      setPassword(inputValue);
+    } else if (inputType === 'occupation') {
+      setOccupation(inputValue);
+    } else if (inputType === 'etat') {
+      setEtat(inputValue);
     }
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
+    if (!checkInputs(contactName)) {
+      setErrorMessage(`Name is required.`);
+      return;
+    }
+
     if (!validateEmail(email)) {
       setErrorMessage('Email is invalid');
       return;
     }
 
-    if (!checkInputs(message) || !checkInputs(contactName)) {
-      setErrorMessage(`All fields are required.`);
+    if (!validatePassword(password)) {
+      setErrorMessage('Password is invalid');
+      //consist 8-15 chars, first character must A-Z or a-z, the next 17-14 chars a word char (\w) - (A-Z, a-z, 0-9, _)
+      return;
+    }
+
+    if (!checkInputs(occupation)) {
+      setErrorMessage(`Occupation is required.`);
+      return;
+    }
+
+    if (!checkInputs(etat)) {
+      setErrorMessage(`State is required.`);
       return;
     }
 
     setContactName('');
-    setMessage('');
     setEmail('');
+    setPassword('');
+    setOccupation('');
+    setEtat('');
   };
   //===================================================
 
 
 
-
   // const matchupList = data?.matchups || [];
   const occupationAndStateList = data || [];
-  console.log(occupationAndStateList);
 
   return (
     <div className="card bg-white card-rounded w-50">
@@ -81,16 +104,21 @@ const Home = () => {
           </ul>
         )}
       </div>
-      <div className="card-footer text-center m-3">
-        <h2>Ready to create a new matchup?</h2>
-        <Link to="/matchup">
-          <button className="btn btn-lg btn-danger">Create Matchup!</button>
-        </Link>
-      </div>
 
       <section className="h-100 bisection bisection-3 col-lg-6">
         <h1 className="bisection-h1 bisection-3-h1">contact form</h1>
         <form>
+          <div className="form-group mb-2">
+            <label htmlFor="contact-name">Name</label>
+            <input
+              value={contactName}
+              name="contactName"
+              onChange={handleInputChange}
+              type="contactName"
+              className="form-control"
+              id="contact-name"
+              placeholder="Sammy Sample" />
+          </div>
           <div className="form-group mb-2">
             <label htmlFor="email">Email address</label>
             <input
@@ -104,27 +132,59 @@ const Home = () => {
               placeholder="Enter email" />
           </div>
           <div className="form-group mb-2">
-            <label htmlFor="contact-name">Name</label>
+            <label htmlFor="password">Password</label>
             <input
-              value={contactName}
-              name="contactName"
+              value={password}
+              name="password"
               onChange={handleInputChange}
-              type="contactName"
+              type="password"
               className="form-control"
-              id="contact-name"
-              placeholder="Sammy Sample" />
+              id="password"
+              placeholder="abcd1234" />
           </div>
-          <div className="form-group mb-2">
-            <label htmlFor="message">Message</label>
-            <textarea
-              value={message}
-              name="message"
-              onChange={handleInputChange}
-              type="message"
-              className="form-control"
-              id="message"
-              rows="3"></textarea>
+
+          <div className="form-group col-md-4">
+            <label htmlFor="inputState">State</label>
+            {/* <select id="inputState" class="form-control"> */}
+
+            {loading ? (
+              <div>Loading...</div>
+            ) : (
+              <select id="inputState" className="form-control">
+                {occupationAndStateList.map((occupation) => {
+                  return (
+                    <option>
+                      {occupation}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+
+            {/* <option selected>Choose...</option>
+              <option>...</option> */}
+            {/* </select> */}
           </div>
+
+
+          {/* <div className="form-group col-md-4">
+            <label htmlFor="inputState">State</label>
+            {loading ? (
+              <div>Loading...</div>
+            ) : (
+              <select id="inputState" class="form-control">
+                {occupationAndStateList.map((state) => {
+                  return (
+                    <option>
+                      {state.name}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+          </div> */}
+
+
           <button type="submit" className="btn btn-primary" onClick={handleFormSubmit}>Submit</button>
         </form>
         {errorMessage && (

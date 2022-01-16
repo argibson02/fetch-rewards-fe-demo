@@ -10,6 +10,7 @@ const resolvers = {
       try {
         let result = await getStateAndOccupation();
         // console.log(result);
+        console.log("resolver");
         return { stateAndOccupationData: result };
       } catch (e) {
         console.error(e);

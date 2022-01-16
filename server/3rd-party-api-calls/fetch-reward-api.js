@@ -4,6 +4,7 @@ const { JsonWebTokenError } = require("jsonwebtoken");
 // GET States and occupations list
 async function getStateAndOccupation() {
     const response = await axios.get("https://frontend-take-home.fetchrewards.com/form");
+    console.log("fetch-api");
     return response.data;
 }
 
