@@ -5,7 +5,8 @@ import { GET_STATE_AND_OCCUPATION } from '../utils/queries';
 
 import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
 
-const Home = () => {
+const Home = (e) => {
+  e.preventDefault();
   const { loading, data } = useQuery(GET_STATE_AND_OCCUPATION, {
     // fetchPolicy: "no-cache"
   }, []);
