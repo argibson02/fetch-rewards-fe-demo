@@ -9,8 +9,6 @@ const resolvers = {
     getStateAndOccupation: async (parent, args) => {
       try {
         let result = await getStateAndOccupation();
-        // console.log(result);
-        console.log("resolver");
         return { stateAndOccupationData: result };
       } catch (e) {
         console.error(e);
@@ -19,7 +17,7 @@ const resolvers = {
 
     // POST API call to submit form data.
     postFormDetails: async (parent, args) => {
-    // postFormDetails: async (parent, { name, email, password, occupation, state }) => {
+      // postFormDetails: async (parent, { name, email, password, occupation, state }) => {
       // console.log("hi");
       console.log(args);
       try {

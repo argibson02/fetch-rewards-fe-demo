@@ -3,7 +3,9 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   scalar JSON
 
-  # GET and POST typedef for Fetch Rewards API.
+  # # # # # # # # # # # # # # # # # # # # # # # #
+  # GET and POST typedef for Fetch Rewards API  #
+  # # # # # # # # # # # # # # # # # # # # # # # #
   type getStateAndOccupation {
     stateAndOccupationData: JSON
   }
@@ -20,7 +22,10 @@ const typeDefs = gql`
   #   state: String!
   # }
 
-  # Unused MongoDB server queries.
+
+  # # # # # # # # # # # # # # # # #  
+  # Unused MongoDB server queries #
+  # # # # # # # # # # # # # # # # #
   type Occupation {
     _id: ID!
     name: String!

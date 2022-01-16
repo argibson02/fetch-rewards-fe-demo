@@ -1,23 +1,38 @@
-// import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_STATE_AND_OCCUPATION } from '../utils/queries';
-
 import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
 
-const Home = (e) => {
-  e.preventDefault();
+
+const Home = () => {
+  //====== STATE/OCCUPATION QUERY - Start =======//
   const { loading, data } = useQuery(GET_STATE_AND_OCCUPATION, {
-    // fetchPolicy: "no-cache"
+    // fetchPolicy: "no-cache"\
   }, []);
-  console.log(loading);
-  console.log(data);
+
+  const occupationAndStateList = data || [];
+  let occupationList = [];
+  let etatList = [];
+  let etatLoaded = false;
+
+  if (data) {
+    // Grabs occupation array/
+    occupationList = occupationAndStateList.getStateAndOccupation.stateAndOccupationData.occupations;
+
+    // Iterates through state object and creates an array that can be mapped in the form dropdown.
+    (() => {
+      let etatObject = occupationAndStateList.getStateAndOccupation.stateAndOccupationData.states;
+      etatObject.forEach(element => etatList.push(element.name));
+      etatLoaded = true;
+    })();
+  }
+  //^^^^^^^ STATE/OCCUPATION QUERY - End ^^^^^^^//
 
 
-  //===================================================
+  //====== FORM VALIDATION - Start =======//
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [contactName, setContactName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states.
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,8 +42,8 @@ const Home = (e) => {
     const inputType = target.name;
     const inputValue = target.value;
 
-    if (inputType === 'contactName') {
-      setContactName(inputValue);
+    if (inputType === 'fullName') {
+      setFullName(inputValue);
     } else if (inputType === 'email') {
       setEmail(inputValue);
     } else if (inputType === 'password') {
@@ -43,7 +58,7 @@ const Home = (e) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    if (!checkInputs(contactName)) {
+    if (!checkInputs(fullName)) {
       setErrorMessage(`Name is required.`);
       return;
     }
@@ -69,57 +84,44 @@ const Home = (e) => {
       return;
     }
 
-    setContactName('');
+    setFullName('');
     setEmail('');
     setPassword('');
     setOccupation('');
     setEtat('');
   };
-  //===================================================
+  //^^^^^^^ FORM VALIDATION - End ^^^^^^^//
 
 
 
-  // const matchupList = data?.matchups || [];
-  const occupationAndStateList = data || [];
-
+  //====== REACT HTML - Start =======//
   return (
     <div className="card bg-white card-rounded w-50">
       <div className="card-header bg-dark text-center">
-        <h1>Welcome to Tech Matchup!</h1>
+        <h1>Automotive Extended Warranty Sign-up!</h1>
       </div>
       <div className="card-body m-5">
-        <h2>Here is a list of matchups you can vote on:</h2>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <ul className="square">
-            {occupationAndStateList.map((state) => {
-              return (
-                <li>
-                  {state.name}
-                  <br />
-                  {state.abbreviation}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <p>We've been trying to reach you about your car's extended warranty. Please fill out the info below and we will be in contact with you shortly about your exclusive offer.</p>
       </div>
 
       <section className="h-100 bisection bisection-3 col-lg-6">
-        <h1 className="bisection-h1 bisection-3-h1">contact form</h1>
+        <h1 className="bisection-h1 bisection-3-h1">Sign-up Form</h1>
         <form>
+
+          {/* Name field */}
           <div className="form-group mb-2">
-            <label htmlFor="contact-name">Name</label>
+            <label htmlFor="full-name">Name</label>
             <input
-              value={contactName}
-              name="contactName"
+              value={fullName}
+              name="fullName"
               onChange={handleInputChange}
-              type="contactName"
+              type="fullName"
               className="form-control"
-              id="contact-name"
+              id="full-name"
               placeholder="Sammy Sample" />
           </div>
+
+          {/* Email field */}
           <div className="form-group mb-2">
             <label htmlFor="email">Email address</label>
             <input
@@ -129,9 +131,11 @@ const Home = (e) => {
               type="email"
               className="form-control"
               id="email"
-              aria-describedby="emailHelp"
-              placeholder="Enter email" />
+              // aria-describedby="emailHelp"
+              placeholder="not@scam.com" />
           </div>
+
+          {/* Password field */}
           <div className="form-group mb-2">
             <label htmlFor="password">Password</label>
             <input
@@ -144,47 +148,57 @@ const Home = (e) => {
               placeholder="abcd1234" />
           </div>
 
-          <div className="form-group col-md-4">
-            <label htmlFor="inputState">State</label>
-            {/* <select id="inputState" class="form-control"> */}
-
+          {/* Occupation field */}
+          <div className="form-group col-8">
+            <label htmlFor="inputOccupation">Occupation</label>
             {loading ? (
               <div>Loading...</div>
             ) : (
-              <select id="inputState" className="form-control">
-                {occupationAndStateList.map((occupation) => {
+              <select
+                value={occupation}
+                name="occupation"
+                onChange={handleInputChange}
+                type="occupation"
+                className="form-control"
+                id="occupation"
+              >
+                <option hidden value="">Select occupation...</option>
+                {occupationList.map((occupation, index) => {
                   return (
-                    <option>
+                    <option key={index}>
                       {occupation}
                     </option>
                   );
                 })}
               </select>
             )}
-
-            {/* <option selected>Choose...</option>
-              <option>...</option> */}
-            {/* </select> */}
           </div>
 
-
-          {/* <div className="form-group col-md-4">
-            <label htmlFor="inputState">State</label>
-            {loading ? (
+          {/* State field */}
+          <div className="form-group col-8">
+            <label htmlFor="inputEtat">State</label>
+            {!etatLoaded ? (
               <div>Loading...</div>
             ) : (
-              <select id="inputState" class="form-control">
-                {occupationAndStateList.map((state) => {
+              <select
+                value={etat}
+                name="etat"
+                onChange={handleInputChange}
+                type="etat"
+                className="form-control"
+                id="etat"
+              >
+                <option hidden value="">Select state...</option>
+                {etatList.map((etat, index) => {
                   return (
-                    <option>
-                      {state.name}
+                    <option key={index}>
+                      {etat}
                     </option>
                   );
                 })}
               </select>
             )}
-          </div> */}
-
+          </div>
 
           <button type="submit" className="btn btn-primary" onClick={handleFormSubmit}>Submit</button>
         </form>
@@ -194,9 +208,9 @@ const Home = (e) => {
           </div>
         )}
       </section>
-
     </div>
   );
 };
+//^^^^^^^ REACT HTML - End ^^^^^^^//
 
 export default Home;
