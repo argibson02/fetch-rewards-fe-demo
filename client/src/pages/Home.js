@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_STATE_AND_OCCUPATION } from '../utils/queries';
+import { useQuery, useLazyQuery } from '@apollo/client';
+import { GET_STATE_AND_OCCUPATION, POST_FORM } from '../utils/queries';
 import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
 
 
@@ -16,7 +16,7 @@ const Home = () => {
   let etatLoaded = false;
 
   if (data) {
-    // Grabs occupation array/
+    // Grabs occupation array.
     occupationList = occupationAndStateList.getStateAndOccupation.stateAndOccupationData.occupations;
 
     // Iterates through state object and creates an array that can be mapped in the form dropdown.
@@ -29,12 +29,20 @@ const Home = () => {
   //^^^^^^^ STATE/OCCUPATION QUERY - End ^^^^^^^//
 
 
+
+
+  let submissionBody = {};
+  const [postForm, { loading: form_loading, data: form_data }] = useLazyQuery(POST_FORM, {
+    variables: { formData: submissionBody }
+  });
+
+
   //====== FORM VALIDATION - Start =======//
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [occupation, setOccupation] = useState('');
-  const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states.
+  const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states...
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
@@ -55,7 +63,10 @@ const Home = () => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (!checkInputs(fullName)) {
@@ -84,6 +95,31 @@ const Home = () => {
       return;
     }
 
+    // POST of form data.
+    try {
+      // Convert submitted values into an object
+      submissionBody = {
+        name: fullName,
+        email: email,
+        password: password,
+        occupation: occupation,
+        state: etat
+      };
+      
+      // Convert to JSON string
+      submissionBody = JSON.stringify(submissionBody);
+
+      // Send string in query to POST 
+      postForm({ variables: { formData: submissionBody } });
+
+      // Clears submission
+      submissionBody = {};
+    } catch (err) {
+      console.error(err);
+    }
+
+    // Clears all state values
+    setErrorMessage();
     setFullName('');
     setEmail('');
     setPassword('');
@@ -101,7 +137,7 @@ const Home = () => {
         <h1>Automotive Extended Warranty Sign-up!</h1>
       </div>
       <div className="card-body m-5">
-        <p>We've been trying to reach you about your car's extended warranty. Please fill out the info below and we will be in contact with you shortly about your exclusive offer.</p>
+        <p>We've been trying to reach you about your car's extended warranty. Please fill out the info below and we will be in contact with you shortly regarding your exclusive offer.</p>
       </div>
 
       <section className="h-100 bisection bisection-3 col-lg-6">
