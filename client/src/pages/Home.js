@@ -30,14 +30,8 @@ const Home = () => {
 
 
 
-
-  let submissionBody = {};
-  const [postForm, { loading: form_loading, data: form_data }] = useLazyQuery(POST_FORM, {
-    variables: { formData: submissionBody }
-  });
-
-
-  //====== FORM VALIDATION - Start =======//
+  //====== FORM VALIDATION AND SUBMISSION - Start =======//
+  // Initializing React states for form values.
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -45,6 +39,8 @@ const Home = () => {
   const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states...
   const [errorMessage, setErrorMessage] = useState('');
 
+
+  // Handles input changes in form fields and stores them in state.
   const handleInputChange = (e) => {
     const { target } = e;
     const inputType = target.name;
@@ -64,8 +60,14 @@ const Home = () => {
   };
 
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Initializing variable and query that is used in form submission. 
+  let submissionBody = {};
+  const [postForm, { loading: form_loading, data: form_data }] = useLazyQuery(POST_FORM, {
+    variables: { formData: submissionBody }
+  });
 
+
+  // Handles form validation, submission, and clearing.
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -75,13 +77,12 @@ const Home = () => {
     }
 
     if (!validateEmail(email)) {
-      setErrorMessage('Email is invalid');
+      setErrorMessage('Email is invalid.');
       return;
     }
 
     if (!validatePassword(password)) {
-      setErrorMessage('Password is invalid');
-      //consist 8-15 chars, first character must A-Z or a-z, the next 17-14 chars a word char (\w) - (A-Z, a-z, 0-9, _)
+      setErrorMessage('Password is invalid. Password must be at least 8 characters long, and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.');
       return;
     }
 
@@ -97,7 +98,7 @@ const Home = () => {
 
     // POST of form data.
     try {
-      // Convert submitted values into an object
+      // Convert submitted values into an object.
       submissionBody = {
         name: fullName,
         email: email,
@@ -105,20 +106,21 @@ const Home = () => {
         occupation: occupation,
         state: etat
       };
-      
-      // Convert to JSON string
+
+      // Convert to JSON string.
       submissionBody = JSON.stringify(submissionBody);
 
-      // Send string in query to POST 
+      // Send string in query to POST.
       postForm({ variables: { formData: submissionBody } });
 
-      // Clears submission
+      // Clears submission.
       submissionBody = {};
     } catch (err) {
+      setErrorMessage('Whoops! Something went wrong... Please try again later');
       console.error(err);
     }
 
-    // Clears all state values
+    // Clears all state values.
     setErrorMessage();
     setFullName('');
     setEmail('');
@@ -126,7 +128,7 @@ const Home = () => {
     setOccupation('');
     setEtat('');
   };
-  //^^^^^^^ FORM VALIDATION - End ^^^^^^^//
+  //^^^^^^^ FORM VALIDATION AND SUBMISSION - End ^^^^^^^//
 
 
 
