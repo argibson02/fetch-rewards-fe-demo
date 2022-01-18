@@ -5,7 +5,7 @@ export function validateEmail(input) {
 
 export function validatePassword(input) {
   // Minimum of 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
-  const password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+  const password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
   if (input.match(password)) {
     return true;
   }

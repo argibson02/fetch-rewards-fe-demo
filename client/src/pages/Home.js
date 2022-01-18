@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_STATE_AND_OCCUPATION, POST_FORM } from '../utils/queries';
 import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
-
+import './Home.css';
 
 const Home = () => {
   //====== STATE/OCCUPATION QUERY - Start =======//
@@ -82,7 +82,7 @@ const Home = () => {
     }
 
     if (!validatePassword(password)) {
-      setErrorMessage('Password is invalid. Password must be at least 8 characters long, and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.');
+      setErrorMessage('Password is invalid.');
       return;
     }
 
@@ -127,6 +127,7 @@ const Home = () => {
     setPassword('');
     setOccupation('');
     setEtat('');
+    return true;
   };
   //^^^^^^^ FORM VALIDATION AND SUBMISSION - End ^^^^^^^//
 
@@ -134,118 +135,138 @@ const Home = () => {
 
   //====== REACT HTML - Start =======//
   return (
-    <div className="card bg-white card-rounded w-50">
-      <div className="card-header bg-dark text-center">
-        <h1>Automotive Extended Warranty Sign-up!</h1>
-      </div>
-      <div className="card-body m-5">
-        <p>We've been trying to reach you about your car's extended warranty. Please fill out the info below and we will be in contact with you shortly regarding your exclusive offer.</p>
-      </div>
-
-      <section className="h-100 bisection bisection-3 col-lg-6">
-        <h1 className="bisection-h1 bisection-3-h1">Sign-up Form</h1>
-        <form>
-
-          {/* Name field */}
-          <div className="form-group mb-2">
-            <label htmlFor="full-name">Name</label>
-            <input
-              value={fullName}
-              name="fullName"
-              onChange={handleInputChange}
-              type="fullName"
-              className="form-control"
-              id="full-name"
-              placeholder="Sammy Sample" />
+    <div className="vh-100">
+      <div className="container">
+        <div className="card card-rounded">
+          <div className="card-header bg-dark text-center">
+            <h1>Automotive Extended Warranty Sign-up</h1>
+          </div>
+          <div className="desc-text">
+            <p>We've been trying to reach you about your car's extended warranty. Please fill out the info below and we will be in contact with you shortly regarding your <u>exclusive</u> offer! <span>🚗</span></p>
           </div>
 
-          {/* Email field */}
-          <div className="form-group mb-2">
-            <label htmlFor="email">Email address</label>
-            <input
-              value={email}
-              name="email"
-              onChange={handleInputChange}
-              type="email"
-              className="form-control"
-              id="email"
-              // aria-describedby="emailHelp"
-              placeholder="not@scam.com" />
-          </div>
+          <section id="form-body" className="card-body col-12 m-3">
+            <h2 className="">Sign-up Form</h2>
+            <form className="row g-3">
 
-          {/* Password field */}
-          <div className="form-group mb-2">
-            <label htmlFor="password">Password</label>
-            <input
-              value={password}
-              name="password"
-              onChange={handleInputChange}
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="abcd1234" />
-          </div>
+              {/* Name field */}
+              <div className="form-group col-10 mb-1">
+                <label htmlFor="full-name" className="form-label" id="full-name-label">Name</label>
+                <input
+                  value={fullName}
+                  name="fullName"
+                  onChange={handleInputChange}
+                  type="text"
+                  className="form-control"
+                  id="full-name"
+                  // placeholder="Sammy Sample"  // Placeholder messes with screen reading... Tested with NVDA
+                  aria-label="full name field"
+                  aria-describedby="full-name-label"
+                />
+              </div>
 
-          {/* Occupation field */}
-          <div className="form-group col-8">
-            <label htmlFor="inputOccupation">Occupation</label>
-            {loading ? (
-              <div>Loading...</div>
-            ) : (
-              <select
-                value={occupation}
-                name="occupation"
-                onChange={handleInputChange}
-                type="occupation"
-                className="form-control"
-                id="occupation"
-              >
-                <option hidden value="">Select occupation...</option>
-                {occupationList.map((occupation, index) => {
-                  return (
-                    <option key={index}>
-                      {occupation}
-                    </option>
-                  );
-                })}
-              </select>
+              {/* Email field */}
+              <div className="form-group col-10 mb-1">
+                <label htmlFor="email" className="form-label" id="email-label">Email address</label>
+                <input
+                  value={email}
+                  name="email"
+                  onChange={handleInputChange}
+                  type="text"
+                  className="form-control"
+                  id="email"
+                  // placeholder="not@scam.com"
+                  aria-label="email field"
+                  aria-describedby="email-label"
+                />
+              </div>
+
+              {/* Password field */}
+              <div className="form-group col-10 mb-1">
+                <label htmlFor="password" className="form-label" id="password-label">Password</label>
+                <input
+                  value={password}
+                  name="password"
+                  onChange={handleInputChange}
+                  type="text"
+                  className="form-control"
+                  id="password"
+                  // placeholder="Abcd123$"
+                  aria-label="password field"
+                  aria-describedby="password-help-block"
+                />
+                <div id="password-help-block" className="form-text">
+                  Your password must be at least 8 characters long, and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
+                </div>
+              </div>
+
+              {/* Occupation field */}
+              <div className="form-group col-10 mb-1">
+                <label htmlFor="occupation" className="form-label" id="occupation-label">Occupation</label>
+                {loading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <select
+                    value={occupation}
+                    name="occupation"
+                    onChange={handleInputChange}
+                    type="occupation"
+                    className="form-control"
+                    id="occupation"
+                    aria-label="select an occupation"
+                    aria-describedby="occupation-label"
+                  >
+                    <option hidden value="">Select occupation...</option>
+                    {occupationList.map((occupation, index) => {
+                      return (
+                        <option key={index}>
+                          {occupation}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
+              </div>
+
+              {/* State field */}
+              <div className="form-group col-10 mb-1">
+                <label htmlFor="etat" className="form-label" id="etat-label">State</label>
+                {!etatLoaded ? (
+                  <div>Loading...</div>
+                ) : (
+                  <select
+                    value={etat}
+                    name="etat"
+                    onChange={handleInputChange}
+                    type="etat"
+                    className="form-control"
+                    id="etat"
+                    aria-label="select a state"
+                    aria-describedby="etat-label"
+                  >
+                    <option hidden value="">Select state...</option>
+                    {etatList.map((etat, index) => {
+                      return (
+                        <option key={index}>
+                          {etat}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
+              </div>
+              <div className="ml-3">
+                <button type="submit" className="btn btn-success" onClick={handleFormSubmit}>Submit</button>
+              </div>
+            </form>
+            {errorMessage && (
+              <div>
+                <p className="error-text">{errorMessage}</p>
+              </div>
             )}
-          </div>
-
-          {/* State field */}
-          <div className="form-group col-8">
-            <label htmlFor="inputEtat">State</label>
-            {!etatLoaded ? (
-              <div>Loading...</div>
-            ) : (
-              <select
-                value={etat}
-                name="etat"
-                onChange={handleInputChange}
-                type="etat"
-                className="form-control"
-                id="etat"
-              >
-                <option hidden value="">Select state...</option>
-                {etatList.map((etat, index) => {
-                  return (
-                    <option key={index}>
-                      {etat}
-                    </option>
-                  );
-                })}
-              </select>
-            )}
-          </div>
-
-          <button type="submit" className="btn btn-primary" onClick={handleFormSubmit}>Submit</button>
-        </form>
-        {errorMessage && (
-          <div>
-            <p className="error-text">{errorMessage}</p>
-          </div>
-        )}
-      </section>
+          </section>
+        </div>
+      </div>
     </div>
   );
 };
