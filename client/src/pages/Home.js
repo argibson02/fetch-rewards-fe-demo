@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useLazyQuery, NetworkStatus } from '@apollo/client';
+import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_STATE_AND_OCCUPATION, POST_FORM } from '../utils/queries';
 import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
 import './Home.css';
@@ -38,6 +38,7 @@ const Home = () => {
   const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states...
   const [response, setResponse] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
 
   // Handles input changes in form fields and stores them in state.
@@ -71,6 +72,7 @@ const Home = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    setSuccessMessage('');
     setErrorMessage('');
 
     if (!checkInputs(fullName)) {
@@ -140,7 +142,8 @@ const Home = () => {
 
       if (submittalResponse === '200') {
         setResponse('200');
-        setErrorMessage('Success!');
+        setErrorMessage('');
+        setSuccessMessage('Success!');
       } else if (submittalResponse === 'error') {
         setResponse('error');
         setErrorMessage('Whoops! Something went wrong... Please try again later');
@@ -271,15 +274,29 @@ const Home = () => {
                   </select>
                 )}
               </div>
+              {/* Submit button */}
               <div className="ml-3">
                 <button type="submit" className="btn btn-success" onClick={handleFormSubmit}>Submit</button>
               </div>
             </form>
+
+            {/* Conditional rendering for feedback bubbles */}
             {errorMessage && (
-              <div className="error-text-container">
-                <p className="error-text">{errorMessage}</p>
+              <div className="d-flex error-text-container">
+                <div className="alert alert-secondary error-text-alert" role="alert">
+                  <p className="error-text">{errorMessage}</p>
+                </div>
               </div>
             )}
+            {successMessage && (
+              <div className="d-flex error-text-container">
+                <div className="alert alert-success error-text-alert" role="alert">
+                  <p className="error-text">{successMessage}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Github link */}
             <div className="git-link">
               <a href="https://github.com/argibson02/fetch-rewards-fe-demo" target="_blank" rel="noopener noreferrer">Link to Git repo</a>
             </div>

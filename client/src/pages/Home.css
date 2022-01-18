@@ -1,3 +1,10 @@
+/* Card body */
+.card-body {
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+/* Description text */
 .desc-text {
     text-align: center;
     margin-top: 0.5rem;
@@ -5,17 +12,28 @@
     margin-right: 0.5rem;
 }
 
-.card-body {
-    padding-top: 0px !important;
-    margin-top: 0px !important;
+.btn {
+    padding: 0.375rem 1.75rem !important;
 }
 
+
+/* Error text bubble */
+.error-text-container {
+    margin-top: 14px !important;
+}
+
+.error-text-alert {
+    padding: .2rem .5rem !important;
+    margin-bottom: 0rem !important;
+    border-radius: .8rem !important;
+}
+
+.error-text {
+    margin-bottom: 0px;
+}
+
+/* Github link */
 .git-link {
     text-align: end;
     margin-right: 20px;
-}
-
-.error-text-container > p {
-    margin-bottom: 0px !important;
-    margin-top: 14px !important;
 }

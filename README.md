@@ -1,6 +1,12 @@
 # Fetch Rewards Frontend Assessment Submission
 This is my submission for Fetch Rewards' Frontend Engineer Assessment. 
 
+**[Click this link to go to the live site!](https://stormy-sea-36255.herokuapp.com/)**.
+
+ <br />
+ <br />
+
+
 
 **Acceptance Criteria**
 ------------------------------------------
