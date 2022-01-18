@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useLazyQuery, NetworkStatus } from '@apollo/client';
 import { GET_STATE_AND_OCCUPATION, POST_FORM } from '../utils/queries';
 import { validateEmail, checkInputs, validatePassword } from '../utils/helpers';
 import './Home.css';
 
 const Home = () => {
   //====== STATE/OCCUPATION QUERY - Start =======//
-  const { loading, data } = useQuery(GET_STATE_AND_OCCUPATION, {
+  const { loading: stateAndOccupation_loading, data: stateAndOccupation_data } = useQuery(GET_STATE_AND_OCCUPATION, {
     // fetchPolicy: "no-cache"\
   }, []);
 
-  const occupationAndStateList = data || [];
+  const occupationAndStateList = stateAndOccupation_data || [];
   let occupationList = [];
   let etatList = [];
   let etatLoaded = false;
 
-  if (data) {
+  if (stateAndOccupation_data) {
     // Grabs occupation array.
     occupationList = occupationAndStateList.getStateAndOccupation.stateAndOccupationData.occupations;
 
@@ -29,7 +29,6 @@ const Home = () => {
   //^^^^^^^ STATE/OCCUPATION QUERY - End ^^^^^^^//
 
 
-
   //====== FORM VALIDATION AND SUBMISSION - Start =======//
   // Initializing React states for form values.
   const [email, setEmail] = useState('');
@@ -37,6 +36,7 @@ const Home = () => {
   const [fullName, setFullName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [etat, setEtat] = useState(''); // Using "État" as a substitute for "State" to avoid potentially messing with React states...
+  const [response, setResponse] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
 
@@ -70,6 +70,8 @@ const Home = () => {
   // Handles form validation, submission, and clearing.
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    setErrorMessage('');
 
     if (!checkInputs(fullName)) {
       setErrorMessage(`Name is required.`);
@@ -115,13 +117,13 @@ const Home = () => {
 
       // Clears submission.
       submissionBody = {};
+
     } catch (err) {
       setErrorMessage('Whoops! Something went wrong... Please try again later');
       console.error(err);
     }
 
     // Clears all state values.
-    setErrorMessage();
     setFullName('');
     setEmail('');
     setPassword('');
@@ -129,6 +131,22 @@ const Home = () => {
     setEtat('');
     return true;
   };
+
+
+  // Provides feedback back to user if form was submitted successfully or not.
+  useEffect(() => {
+    if (form_data) {
+      let submittalResponse = form_data.postFormDetails.formData;
+
+      if (submittalResponse === '200') {
+        setResponse('200');
+        setErrorMessage('Success!');
+      } else if (submittalResponse === 'error') {
+        setResponse('error');
+        setErrorMessage('Whoops! Something went wrong... Please try again later');
+      }
+    }
+  }, [form_data, response]);
   //^^^^^^^ FORM VALIDATION AND SUBMISSION - End ^^^^^^^//
 
 
@@ -188,7 +206,7 @@ const Home = () => {
                   value={password}
                   name="password"
                   onChange={handleInputChange}
-                  type="text"
+                  type="password"
                   className="form-control"
                   id="password"
                   // placeholder="Abcd123$"
@@ -203,14 +221,13 @@ const Home = () => {
               {/* Occupation field */}
               <div className="form-group col-10 mb-1">
                 <label htmlFor="occupation" className="form-label" id="occupation-label">Occupation</label>
-                {loading ? (
+                {stateAndOccupation_loading ? (
                   <div>Loading...</div>
                 ) : (
                   <select
                     value={occupation}
                     name="occupation"
                     onChange={handleInputChange}
-                    type="occupation"
                     className="form-control"
                     id="occupation"
                     aria-label="select an occupation"
@@ -238,7 +255,6 @@ const Home = () => {
                     value={etat}
                     name="etat"
                     onChange={handleInputChange}
-                    type="etat"
                     className="form-control"
                     id="etat"
                     aria-label="select a state"
@@ -260,10 +276,13 @@ const Home = () => {
               </div>
             </form>
             {errorMessage && (
-              <div>
+              <div className="error-text-container">
                 <p className="error-text">{errorMessage}</p>
               </div>
             )}
+            <div className="git-link">
+              <a href="https://github.com/argibson02/fetch-rewards-fe-demo" target="_blank" rel="noopener noreferrer">Link to Git repo</a>
+            </div>
           </section>
         </div>
       </div>

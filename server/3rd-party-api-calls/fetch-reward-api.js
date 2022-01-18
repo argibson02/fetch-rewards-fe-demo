@@ -13,9 +13,10 @@ async function postFormDetails(submissionBody) {
     let jsonBody = JSON.parse(submissionBody.formData);
 
     const response = await axios.post("https://frontend-take-home.fetchrewards.com/form", jsonBody);
-    console.log(response.status);
-    // console.log(response);
-    return response;
+    let responseString = response.status;
+    responseString = responseString.toString();
+    
+    return responseString;
 }
 
 module.exports = { getStateAndOccupation, postFormDetails };

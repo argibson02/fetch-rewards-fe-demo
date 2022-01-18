@@ -4,3 +4,18 @@
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }
+
+.card-body {
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+.git-link {
+    text-align: end;
+    margin-right: 20px;
+}
+
+.error-text-container > p {
+    margin-bottom: 0px !important;
+    margin-top: 14px !important;
+}

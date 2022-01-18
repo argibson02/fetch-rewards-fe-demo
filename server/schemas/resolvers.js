@@ -21,9 +21,12 @@ const resolvers = {
       try {
         let result = await postFormDetails(args);
 
-        return result;
+        // Sends back '200' that will used in the useEffect in Home.js to render feedback.
+        return { formData: result };
       } catch (e) {
         console.error(e);
+        // Sends back 'error' that will used in the useEffect in Home.js to render feedback.
+        return { formData: 'error' };
       }
     },
 
