@@ -2,6 +2,10 @@
 This is my submission for Fetch Rewards' Frontend Engineer Assessment. Please reach out to me if you have any questions.
 
 **[Click this link to go to the live site!](https://stormy-sea-36255.herokuapp.com/)**
+ <br />
+
+**Demo of the webpage in action!**
+![Demo of the webpage in action!](./client/public/demo.gif)
 
  <br />
 
