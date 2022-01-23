@@ -4,13 +4,13 @@ const stateSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   abbreviation: {
     type: String,
     required: true,
-    unique: true
-  }
+    unique: true,
+  },
 });
 
 const State = model('state', stateSchema);

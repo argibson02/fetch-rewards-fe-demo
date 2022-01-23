@@ -1,6 +1,6 @@
+const GraphQLJSON = require('graphql-type-json');
 const { State, Occupation, Form } = require('../models');
 const { getStateAndOccupation, postFormDetails } = require('../3rd-party-api-calls/fetch-reward-api');
-const GraphQLJSON = require('graphql-type-json');
 
 const resolvers = {
   JSON: GraphQLJSON,
@@ -8,7 +8,7 @@ const resolvers = {
     // GET API call to grab states and occupations.
     getStateAndOccupation: async (parent, args) => {
       try {
-        let result = await getStateAndOccupation();
+        const result = await getStateAndOccupation();
 
         return { stateAndOccupationData: result };
       } catch (e) {
@@ -19,7 +19,7 @@ const resolvers = {
     // POST API call to submit form data.
     postFormDetails: async (parent, args) => {
       try {
-        let result = await postFormDetails(args);
+        const result = await postFormDetails(args);
 
         // Sends back '200' that will used in the useEffect in Home.js to render feedback.
         return { formData: result };
@@ -42,24 +42,24 @@ const resolvers = {
 
     form: async () => {
       return Form.find({});
-    }
+    },
 
   },
   Mutation: {
     // Basic creates for models. Not currently used, but ready to be stored on MongoDB server.
     createState: async (parent, args) => {
-      let result = await getStateAndOccupation();
+      const result = await getStateAndOccupation();
       // console.log(result);
-      let statesList = result.states;
+      const statesList = result.states;
       const state = await State.insertMany({ statesList });
       // console.log(state);
       return state;
     },
 
     createOccupation: async (parent, args) => {
-      let result = await getStateAndOccupation();
+      const result = await getStateAndOccupation();
       // console.log(result);
-      let occupationsList = result.occupations;
+      const occupationsList = result.occupations;
       const occupation = await Occupation.insertMany({ occupationsList });
       // console.log(occupation);
       return occupation;
@@ -69,8 +69,8 @@ const resolvers = {
       const form = await Form.create({ name, email, password, occupation, state });
       // console.log(form);
       return form;
-    }
-  }
+    },
+  },
 };
 
 module.exports = resolvers;

@@ -1,18 +1,17 @@
-const axios = require("axios");
-const { JsonWebTokenError } = require("jsonwebtoken");
+const axios = require('axios');
 
 // GET States and occupations list
 async function getStateAndOccupation() {
-    const response = await axios.get("https://frontend-take-home.fetchrewards.com/form");
+    const response = await axios.get('https://frontend-take-home.fetchrewards.com/form');
 
     return response.data;
 }
 
 // POST all form data to endpoint
 async function postFormDetails(submissionBody) {
-    let jsonBody = JSON.parse(submissionBody.formData);
+    const jsonBody = JSON.parse(submissionBody.formData);
 
-    const response = await axios.post("https://frontend-take-home.fetchrewards.com/form", jsonBody);
+    const response = await axios.post('https://frontend-take-home.fetchrewards.com/form', jsonBody);
     let responseString = response.status;
     responseString = responseString.toString();
     

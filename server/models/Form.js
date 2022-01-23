@@ -3,25 +3,25 @@ const { Schema, model } = require('mongoose');
 const formSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
     required: true,
-    minlength: 8
+    minlength: 8,
   },
   occupation: {
     type: String,
-    required: true
+    required: true,
   },
   state: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const Form = model('form', formSchema);

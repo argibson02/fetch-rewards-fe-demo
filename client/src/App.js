@@ -13,7 +13,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div className="flex-column justify-center align-center home-header-bg">
+        <div className="flex-column justify-center align-center">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route component={NotFound} />
